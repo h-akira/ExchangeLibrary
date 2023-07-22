@@ -20,6 +20,16 @@ matplotlib.use("Agg")
 # import matplotlib.pyplot as plt
 import mplfinance as mpf
 
+def plus_latest(df, filename="currency.csv"):
+  # dfに最新の情報を追加する
+  # ただしcloseのみ
+  # 最新の情報が記載されたcsvファイルが必要である
+  latest_df = pd.read_csv(filename, header=None)
+  latest_df.columns = ['date', 'Close']
+  latest_df["date"] = pd.to_datetime(latest_df["date"])
+  latest_df.set_index("date", inplace=True)
+  latest_df.index = df.index.tz_localize(timezone('Asia/Tokyo'))
+
 def GMO_dir2DataFrame(dir_name,pair="USDJPY",date_range=None):
   # pairは"/"を含んでいてもいなくても処理可能
   # date_rangeはdatetime.date型を要素に持つリストまたはタプル
@@ -56,7 +66,6 @@ def GMO_dir2DataFrame(dir_name,pair="USDJPY",date_range=None):
     df = pd.concat([df,GMO_csv2DataFrame(file)])
   df = df.sort_values(by="date", ascending=True)
   return df
-
 
 def GMO_csv2DataFrame(file_name,BID_ASK="BID"):
   # GMOクリック証券からダウンロードしたヒストリカルデータ（CSVファイル）を読み込み，
