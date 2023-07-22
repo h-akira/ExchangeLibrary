@@ -24,6 +24,7 @@ def plus_latest(df, filename="currency.csv"):
   # dfに最新の情報を追加する
   # ただしcloseのみ
   # 最新の情報が記載されたcsvファイルが必要である
+  # 製作中
   latest_df = pd.read_csv(filename, header=None)
   latest_df.columns = ['date', 'Close']
   latest_df["date"] = pd.to_datetime(latest_df["date"])
