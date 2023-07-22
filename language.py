@@ -6,6 +6,7 @@ class Dictionary:
     "成行":"market",
     "通常":"normal",
     "OCO":"OCO",
+    "IFD-OCO":"IFD-OCO",
     "新規":"new",
     "決済":"settlement",
     "買":"buy",
