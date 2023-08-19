@@ -5,7 +5,9 @@ from . import chart
 
 plot_args = {
   "type":"candle",
-  "style":"nightclouds",
+  # "style":"charles",
+  "style":"starsandstripes",
+  # "style":"blueskies",
 }
 
 def add_technical_columns(df):
