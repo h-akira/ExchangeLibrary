@@ -71,6 +71,8 @@ def GMO_dir2DataFrame(dir_name,pair="USDJPY",date_range=None):
 def GMO_csv2DataFrame(file_name,BID_ASK="BID"):
   # GMOクリック証券からダウンロードしたヒストリカルデータ（CSVファイル）を読み込み，
   # mplfinanceで扱えるデータフレームにして返す．
+  if not os.path.isfile(file_name):
+    raise FileNotFoundError(f"{file_name}は存在しません．")
   df = pd.read_csv(file_name, encoding='shift_jis').rename(
     columns={
       '日時':'date', 
