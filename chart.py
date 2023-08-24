@@ -64,7 +64,7 @@ def GMO_dir2DataFrame(dir_name,pair="USDJPY",date_range=None, BID_ASK="BID"):
         pass
       else:
         continue
-    df = pd.concat([df,GMO_csv2DataFrame(file), BID_ASK="BID"])
+    df = pd.concat([df,GMO_csv2DataFrame(file,BID_ASK="BID")])
   df = df.sort_values(by="date", ascending=True)
   return df
 
