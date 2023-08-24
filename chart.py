@@ -31,7 +31,7 @@ def plus_latest(df, filename="currency.csv"):
   latest_df.set_index("date", inplace=True)
   latest_df.index = df.index.tz_localize(timezone('Asia/Tokyo'))
 
-def GMO_dir2DataFrame(dir_name,pair="USDJPY",date_range=None):
+def GMO_dir2DataFrame(dir_name,pair="USDJPY",date_range=None, BID_ASK="BID"):
   # pairは"/"を含んでいてもいなくても処理可能
   # date_rangeはdatetime.date型を要素に持つリストまたはタプル
   # ディレクトリ構造は以下の通り:
@@ -64,7 +64,7 @@ def GMO_dir2DataFrame(dir_name,pair="USDJPY",date_range=None):
         pass
       else:
         continue
-    df = pd.concat([df,GMO_csv2DataFrame(file)])
+    df = pd.concat([df,GMO_csv2DataFrame(file), BID_ASK="BID"])
   df = df.sort_values(by="date", ascending=True)
   return df
 
