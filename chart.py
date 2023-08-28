@@ -12,13 +12,7 @@ import os
 import re
 import io
 import datetime
-import matplotlib
 from pytz import timezone
-# matplotlib.use('TkAgg')
-# matplotlib.use('Qt5Agg')
-matplotlib.use("Agg")
-# import matplotlib.pyplot as plt
-import mplfinance as mpf
 
 def plus_latest(df, filename="currency.csv"):
   # dfに最新の情報を追加する
@@ -115,6 +109,9 @@ def resample(df, rule):
   return df
 
 def gen_chart(df,transaction_start=None,transaction_end=None,max_value=None, min_value=None, hlines=None,vlines=None,lines=None, style=None, savefig=None,figsize=(2,1),png=False, dpi=200):
+  import matplotlib
+  matplotlib.use("Agg")
+  import mplfinance as mpf
   # hlinesとvlinseは辞書型
   # 例: {'hlines':[136.28,136.32],'colors':['g','r'],'linewidths'=[1,1]}
   # linesは辞書型を要素とするリスト
