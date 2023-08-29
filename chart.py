@@ -84,6 +84,22 @@ def GMO_csv2DataFrame(file_name,BID_ASK="BID"):
   df.index = df.index.tz_localize(timezone('Asia/Tokyo'))
   return df
 
+def get_rate(dir_name, pair, dt, BID_ASK="BID"):
+  df = GMO_dir2DataFrame(
+    dir_name,
+    pair=pair,
+    date_range=[
+      (dt-datetime.timedelta(days=1)).date(),
+      (dt+datetime.timedelta(days=1)).date()
+    ],
+    BID_ASK = BID_ASK
+  )
+  df = df[df.index <= dt]
+  return df.iloc[-1]["Close"]
+  # デバッグ用サンプル
+  # dt = datetime.datetime.now(timezone("Asia/Tokyo")) - datetime.timedelta(days=7)
+  # print(lib.chart.get_rate(os.path.join(os.path.dirname(__file__),"../data/rate"), pair="USDJPY", dt=dt))
+
 def add_BBands(df,period=20,nbdev=2,matype=0, name={"up":"bb_up", "middle":"bb_middle", "down":"bb_down"}):
   # mplfinanceのデータフレームにボリンジャーバンドの列を追加する．
   bb_up, bb_middle, bb_down = talib.BBANDS(numpy.array(df['Close']), timeperiod=period, nbdevup=nbdev, nbdevdn=nbdev, matype=matype)
