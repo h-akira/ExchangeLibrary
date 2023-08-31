@@ -52,7 +52,10 @@ def add_technical_lines(plot_args, df):
       "alpha":1
     }
   ]
-  plot_args["addplot"] = [mpf.make_addplot(**line_args) for line_args in lines]
+  if "addplot" in plot_args.keys():
+    plot_args["addplot"] += [mpf.make_addplot(**line_args) for line_args in lines]
+  else:
+    plot_args["addplot"] = [mpf.make_addplot(**line_args) for line_args in lines]
   return plot_args
 
 
