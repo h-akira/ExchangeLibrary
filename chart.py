@@ -89,7 +89,7 @@ def get_rate(dir_name, pair, dt, BID_ASK="BID"):
     dir_name,
     pair=pair,
     date_range=[
-      (dt-datetime.timedelta(days=1)).date(),
+      (dt-datetime.timedelta(days=5)).date(), # 休日の場合必要
       (dt+datetime.timedelta(days=1)).date()
     ],
     BID_ASK = BID_ASK
