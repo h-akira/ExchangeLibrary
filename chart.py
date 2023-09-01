@@ -84,7 +84,7 @@ def GMO_csv2DataFrame(file_name,BID_ASK="BID"):
   df.index = df.index.tz_localize(timezone('Asia/Tokyo'))
   return df
 
-def get_rate(dir_name, pair, dt, BID_ASK="BID"):
+def get_rate(dir_name, pair, dt, BID_ASK="BID", column="Open"):
   df = GMO_dir2DataFrame(
     dir_name,
     pair=pair,
@@ -95,7 +95,7 @@ def get_rate(dir_name, pair, dt, BID_ASK="BID"):
     BID_ASK = BID_ASK
   )
   df = df[df.index <= dt]
-  return df.iloc[-1]["Close"]
+  return df.iloc[-1][column]
   # デバッグ用サンプル
   # dt = datetime.datetime.now(timezone("Asia/Tokyo")) - datetime.timedelta(days=7)
   # print(lib.chart.get_rate(os.path.join(os.path.dirname(__file__),"../data/rate"), pair="USDJPY", dt=dt))
