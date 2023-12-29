@@ -15,9 +15,9 @@ def add_technical_columns(df):
   df = chart.add_BBands(df,20,2,0,name={"up":"bb_up_2", "middle":"bb_middle", "down":"bb_down_2"})
   df = chart.add_BBands(df,20,3,0,name={"up":"bb_up_3", "middle":"bb_middle", "down":"bb_down_3"})
   # 移動平均線を追加
-  df = chart.add_SMA(df, 5, "SMA_5") 
+  df = chart.add_SMA(df, 9, "SMA_9") 
   df = chart.add_SMA(df, 20, "SMA_20") 
-  df = chart.add_SMA(df, 50, "SMA_50") 
+  df = chart.add_SMA(df, 60, "SMA_60") 
   return df
 
 def add_technical_lines(plot_args, df):
@@ -37,7 +37,7 @@ def add_technical_lines(plot_args, df):
       "alpha":1
     },
     {
-      "data":df[["SMA_5"]],
+      "data":df[["SMA_9"]],
       "color":"#bc763c",
       "alpha":1
     },
@@ -47,7 +47,7 @@ def add_technical_lines(plot_args, df):
       "alpha":1
     },
     {
-      "data":df[["SMA_50"]],
+      "data":df[["SMA_60"]],
       "color":"y",
       "alpha":1
     }

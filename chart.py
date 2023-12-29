@@ -14,17 +14,6 @@ import io
 import datetime
 from pytz import timezone
 
-def plus_latest(df, filename="currency.csv"):
-  # dfに最新の情報を追加する
-  # ただしcloseのみ
-  # 最新の情報が記載されたcsvファイルが必要である
-  # 製作中
-  latest_df = pd.read_csv(filename, header=None)
-  latest_df.columns = ['date', 'Close']
-  latest_df["date"] = pd.to_datetime(latest_df["date"])
-  latest_df.set_index("date", inplace=True)
-  latest_df.index = df.index.tz_localize(timezone('Asia/Tokyo'))
-
 def GMO_dir2DataFrame(dir_name,pair="USDJPY",date_range=None, BID_ASK="BID"):
   # pairは"/"を含んでいてもいなくても処理可能
   # date_rangeはdatetime.date型を要素に持つリストまたはタプル
@@ -100,16 +89,19 @@ def get_rate(dir_name, pair, dt, BID_ASK="BID", column="Open"):
   # dt = datetime.datetime.now(timezone("Asia/Tokyo")) - datetime.timedelta(days=7)
   # print(lib.chart.get_rate(os.path.join(os.path.dirname(__file__),"../data/rate"), pair="USDJPY", dt=dt))
 
-def add_BBands(df,period=20,nbdev=2,matype=0, name={"up":"bb_up", "middle":"bb_middle", "down":"bb_down"}):
-  # mplfinanceのデータフレームにボリンジャーバンドの列を追加する．
-  bb_up, bb_middle, bb_down = talib.BBANDS(numpy.array(df['Close']), timeperiod=period, nbdevup=nbdev, nbdevdn=nbdev, matype=matype)
-  df[name['up']]=bb_up
-  df[name['middle']]=bb_middle
-  df[name['down']]=bb_down
+def add_BBands(df, period=20, nbdev=2, matype=0, name={"up":"bb_up", "middle":"bb_middle", "down":"bb_down"}):
+  # 移動平均を計算
+  df[name['middle']] = df['Close'].rolling(window=period).mean()
+  # 標準偏差を計算
+  rolling_std = df['Close'].rolling(window=period).std(ddof=0)
+  # ボリンジャーバンドの上部と下部を計算
+  df[name['up']] = df[name['middle']] + (rolling_std * nbdev)
+  df[name['down']] = df[name['middle']] - (rolling_std * nbdev)
   return df
 
 def add_SMA(df, period, name):
-  df[name]=talib.SMA(df["Close"], timeperiod=period)
+  # 移動平均を計算
+  df[name] = df["Close"].rolling(window=period).mean()
   return df
 
 def resample(df, rule):
