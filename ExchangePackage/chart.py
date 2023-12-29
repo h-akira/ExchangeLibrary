@@ -5,7 +5,6 @@
 
 # Import
 import pandas as pd
-import talib
 import numpy
 import glob
 import os
@@ -116,7 +115,7 @@ def resample(df, rule):
   df = df.dropna(how="any")
   return df
 
-def gen_chart(df,transaction_start=None,transaction_end=None,max_value=None, min_value=None, hlines=None,vlines=None,lines=None, style=None, savefig=None,figsize=(2,1),png=False, dpi=200):
+def gen_chart(df,transaction_start=None,transaction_end=None,max_value=None, min_value=None, hlines=None,vlines=None,lines=None, style=None, savefig=None,figsize=(14,8),png=False, dpi=200):
   import matplotlib
   matplotlib.use("Agg")
   import mplfinance as mpf
@@ -165,13 +164,14 @@ def test():
 
 """, formatter_class = argparse.ArgumentDefaultsHelpFormatter)
   parser.add_argument("--version", action="version", version='%(prog)s 0.0.1')
-  # parser.add_argument("-o", "--output", metavar="output-file", default="output", help="output file")
-  # parser.add_argument("-l", "--little", action="store_true", help="little endian")
+  parser.add_argument("-o", "--output", metavar="output-file", default="test.png", help="output file")
+  # parser.add_argument("-", "--", action="store_true", help="")
   parser.add_argument("file", metavar="input-file", help="input file")
   options = parser.parse_args()
   df = GMO_csv2DataFrame(options.file)
   df = resample(df, "5T")
   df = add_BBands(df,20,2,0)
+  df = df.dropna(how="any").head(100)
   lines=[
     {
       "data":df[["bb_up","bb_down"]],
@@ -185,8 +185,16 @@ def test():
       "alpha":0.5
     }
   ]
-  # chart.gen_chart(df.head(100),"2023-05-01 07:23","2023-05-01 07:33",dict(hlines=[136.28,136.32],colors=["g","r"]),figsize=(10,5),savefig=dict(fname="test.png",dpi=1000))
-  gen_chart(df.head(100),"2023-05-01 07:23","2023-05-01 07:33",dict(hlines=[136.28,136.32],colors=["g","g"],linewidths=[0.1,0.1]),lines=lines)
+  hlines = {
+    "hlines":[df.iloc[40]["Open"],df.iloc[60]["Close"]],
+    "colors":["g","g"],
+    "linewidths":[0.1,0.1]
+  }
+  savefig = {
+    "fname":options.output,
+    "dpi":200
+  }
+  gen_chart(df, transaction_start=df.index[40],transaction_end=df.index[60],hlines=hlines,lines=lines, savefig=savefig)
 
 if __name__ == '__main__':
   test()
