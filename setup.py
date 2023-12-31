@@ -6,4 +6,4 @@
 from setuptools import setup, find_packages
 with open("requirements.txt", "r") as f:
   install_requires = f.read().splitlines()
-setup(name='ExchangeLibrary',version='1.0.2', install_requires=install_requires, packages=find_packages())
+setup(name='ExchangeLibrary',version='1.0.3', install_requires=install_requires, packages=find_packages())
